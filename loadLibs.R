@@ -15,9 +15,9 @@ loadLibs <- function(filename){
   library_list <- lines[grep("library\\(", lines)]
   
   # Remove duplicate library lines and the ones with "=" sign, i.e. library(help = "packagname")
-  libraries <- unique(lines[!grepl("=", library_list)])
+  libraries <- unique(library_list[!grepl("=", library_list)])
   
   # List library calls and executed calls
   list(`packages calls` = libraries,
-       `currently attached packages` = eval(parse(text = libs)))
+       `currently attached packages` = eval(parse(text = libraries)))
 }

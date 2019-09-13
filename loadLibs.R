@@ -1,15 +1,23 @@
-loadLibs <- function(text){
+loadLibs <- function(filename){
   
-  # This function loads R libraries listed in (long) text files such as .Rmd, .R
-  # and returns a list of package calls (and executes them) in the text file and
+  # This function takes filename as a single argument and 
+  # loads R libraries listed in (long) text files such 
+  # as .Rmd, .R and returns a list of package calls (and 
+  # executes them) in the text file and
   # all attached packages in the current session. 
+  #
+  # Example: loadLibs("longFile.R")
   
-  x <- readLines(text)
+  # Read lines of the file
+  lines <- readLines(filename)
   
-  l <- x[grep("library\\(", x)]
+  # Pick lines that have pattern "library("
+  library_list <- lines[grep("library\\(", lines)]
   
-  libs <- unique(l[!grepl("=", l)])
+  # Remove duplicate library lines and the ones with "=" sign, i.e. library(help = "packagname")
+  libraries <- unique(lines[!grepl("=", library_list)])
   
-  list(`packages calls` = libs,
+  # List library calls and executed calls
+  list(`packages calls` = libraries,
        `currently attached packages` = eval(parse(text = libs)))
 }
